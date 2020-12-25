@@ -1,0 +1,28 @@
+{{ define "content" }}
+<h1>Zero: Login</h1>
+
+{{ if .Error }}
+<div>
+    <mark>{{ .Error }}</mark>
+</div>
+{{ end }}
+
+<form action="/users/authenticate" method="POST">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" value="{{ .Email }}" autofocus>
+    <br />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password">
+    <br />
+    <input id="persistent" name="persistent" type="checkbox">
+    <label for="persistent">Remember me</label>
+    <br />
+    <button type="submit">Login</button>
+</form>
+
+<hr />
+
+<ul>
+    <li><a href="/users">See all users</a></li>
+</ul>
+{{ end }}

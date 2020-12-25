@@ -1,0 +1,23 @@
+{{ define "content" }}
+<h1>Edit User: {{ .User.Email }}</h1>
+
+{{ if .Error }}
+<div>
+    <mark>{{ .Error }}</mark>
+</div>
+{{ end }}
+
+<form action="/users/update" method="POST">
+    <input name="id" value="{{ .User.Id }}" type="hidden">
+    <label for="email">Email</label>
+    <input name="old_email" value="{{ .User.Email }}" type="hidden">
+    <input id="email" name="email" type="email" value="{{ .User.Email }}" autofocus>
+    <br />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password">
+    <br />
+    <button type="submit">Update user</button>
+</form>
+
+{{ end }}
+

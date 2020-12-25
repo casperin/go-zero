@@ -1,0 +1,20 @@
+{{ define "content" }}
+<h1>New User</h1>
+
+{{ if .Error }}
+<div>
+    <mark>{{ .Error }}</mark>
+</div>
+{{ end }}
+
+<form action="/users/create" method="POST">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" value="{{ .Email }}" autofocus>
+    <br />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password">
+    <br />
+    <button type="submit">Create user</button>
+</form>
+
+{{ end }}

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <link rel="icon" href="data:;base64,=">
+        <title>{{ if .Title }}{{ .Title }}{{ else }}Zero{{ end }}</title>
+        <link rel="stylesheet" href="/assets/styles.css">
+    </head>
+    <body>
+        {{ if .Alert }}<div class="alert">{{ .Alert }}</div>{{ end }}
+        {{ if .Info }}<div class="info">{{ .Info }}</div>{{ end }}
+        {{ if .User }}<a href="/logout" style="float:right">Logout</a>{{ end }}
+        {{ template "content" . }}
+    </body>
+</html>

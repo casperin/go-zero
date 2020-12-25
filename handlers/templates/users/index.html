@@ -1,0 +1,26 @@
+{{ define "content" }}
+<h1>Users</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ range .Users }}
+        <tr>
+            <td>{{ .Id }}</td>
+            <td>{{ .Email }}</td>
+            <td><a href="/users?id={{ .Id }}">Show</a></td>
+            <td><a href="/users/edit?id={{ .Id }}">Edit</a></td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+<a href="/users/new">Create user</a>
+{{ end }}

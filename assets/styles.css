@@ -1,0 +1,15 @@
+body {
+    font-family: sans-serif;
+}
+
+.info {
+    background: #fec;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: .5em;
+}
+
+.alert {
+    background: #fdd;
+    border: 1px solid rgba(0,0,0,.2);
+    padding: .5em;
+}
