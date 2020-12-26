@@ -129,9 +129,9 @@ func renderError(w http.ResponseWriter, e error, statusCode ...int) error {
 	if len(statusCode) > 0 {
 		s = statusCode[0]
 	}
-	tpl, e := template.ParseFiles("handlers/templates/layout.html", "handlers/templates/error.html")
-	if e != nil {
-		return e
+	tpl, err := template.ParseFiles("handlers/templates/layout.html", "handlers/templates/error.html")
+	if err != nil {
+		return err
 	}
 	return tpl.Execute(w, map[string]interface{}{"StatusCode": s, "Error": e})
 }
