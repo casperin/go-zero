@@ -43,7 +43,7 @@ func usersCreate(w http.ResponseWriter, r *http.Request, conf unauthedConfig) er
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 	if email == "" || password == "" {
-		conf.tplArgs["Error"] = "Both email and password are required"
+		conf.tplArgs["Alert"] = "Both email and password are required"
 		conf.tplArgs["Email"] = email
 		return renderTemplate(w, r, conf.tplArgs, "users/new.html")
 	}
@@ -114,7 +114,7 @@ func usersAuthenticate(w http.ResponseWriter, r *http.Request, conf unauthedConf
 		e = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	}
 	if e != nil {
-		conf.tplArgs["Error"] = "Email or password is not correct"
+		conf.tplArgs["Alert"] = "Email or password is not correct"
 		conf.tplArgs["Email"] = email
 		return renderTemplate(w, r, conf.tplArgs, "home/index.html")
 	}

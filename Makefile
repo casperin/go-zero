@@ -3,6 +3,9 @@ name = zero
 run:
 	go run ./cmd/zerod/main.go
 
+build:
+	go build ./cmd/zerod/main.go
+
 migrate_up:
 	go run ./cmd/migrate/main.go up
 

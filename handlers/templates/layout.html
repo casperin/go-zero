@@ -8,9 +8,20 @@
         <link rel="stylesheet" href="/assets/styles.css">
     </head>
     <body>
+        <header class="header">
+            {{ if .IsLoggedIn }}
+                <a href="/home" class="header__logo">Zero</a>
+                <span class="header__info">
+                    {{ .Me.Email }}
+                    &nbsp;
+                    <a href="/logout">Logout</a>
+                </span>
+            {{ else }}
+                <a href="/" class="header__logo">Zero</a>
+            {{ end }}
+        </header>
         {{ if .Alert }}<div class="alert">{{ .Alert }}</div>{{ end }}
         {{ if .Info }}<div class="info">{{ .Info }}</div>{{ end }}
-        {{ if .User }}<a href="/logout" style="float:right">Logout</a>{{ end }}
         {{ template "content" . }}
     </body>
 </html>

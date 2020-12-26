@@ -1,15 +1,9 @@
 package handlers
 
-import (
-	"net/http"
-
-	"github.com/casperin/go-zero/handlers/cookie"
-)
+import "net/http"
 
 func index(w http.ResponseWriter, r *http.Request, conf unauthedConfig) error {
-	_, _, e := cookie.GetUser(r)
-	if e == nil {
-		// User is logged in, so we forward to home
+	if conf.isLoggedIn {
 		http.Redirect(w, r, "/home", 302)
 		return nil
 	}

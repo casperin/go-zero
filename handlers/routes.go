@@ -12,14 +12,16 @@ import (
 )
 
 type unauthedConfig struct {
-	db      *sqlx.DB
-	tplArgs map[string]interface{}
+	db         *sqlx.DB
+	isLoggedIn bool
+	tplArgs    map[string]interface{}
 }
 
 type authedConfig struct {
-	db      *sqlx.DB
-	user    models.User
-	tplArgs map[string]interface{}
+	db         *sqlx.DB
+	isLoggedIn bool
+	me         models.User
+	tplArgs    map[string]interface{}
 }
 
 type unauthedHandler struct {
@@ -49,16 +51,23 @@ var authedHandlers = []authedHandler{
 
 func Routes(db *sqlx.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		id, email, e := cookie.GetUser(r)
+		isLoggedIn := e == nil
+		user := models.User{Id: id, Email: email}
+
 		// Unauthed handlers
 		for _, h := range unauthedHandlers {
 			if h.path != r.URL.Path {
 				continue
 			}
 			e := h.handler(w, r, unauthedConfig{
-				db: db,
+				db:         db,
+				isLoggedIn: isLoggedIn,
 				tplArgs: map[string]interface{}{
-					"Info":  cookie.Consume(w, r, "info"),
-					"Alert": cookie.Consume(w, r, "alert"),
+					"IsLoggedIn": isLoggedIn,
+					"Me":         user, // may be empty user
+					"Info":       cookie.Consume(w, r, "info"),
+					"Alert":      cookie.Consume(w, r, "alert"),
 				},
 			})
 			if e != nil {
@@ -72,20 +81,20 @@ func Routes(db *sqlx.DB) http.HandlerFunc {
 			if h.path != r.URL.Path {
 				continue
 			}
-			id, email, e := cookie.GetUser(r)
-			if e != nil {
+			if !isLoggedIn {
 				cookie.SetInfo(w, "You are not logged in")
 				http.Redirect(w, r, "/", 302)
 				return
 			}
-			user := models.User{Id: id, Email: email}
 			e = h.handler(w, r, authedConfig{
-				db:   db,
-				user: user,
+				db:         db,
+				isLoggedIn: true,
+				me:         user,
 				tplArgs: map[string]interface{}{
-					"User":  user,
-					"Info":  cookie.Consume(w, r, "info"),
-					"Alert": cookie.Consume(w, r, "alert"),
+					"IsLoggedIn": true,
+					"Me":         user,
+					"Info":       cookie.Consume(w, r, "info"),
+					"Alert":      cookie.Consume(w, r, "alert"),
 				},
 			})
 			if e != nil {
@@ -95,7 +104,7 @@ func Routes(db *sqlx.DB) http.HandlerFunc {
 		}
 
 		w.WriteHeader(404)
-		e := renderTemplate(w, r, nil, "404.html")
+		e = renderTemplate(w, r, nil, "404.html")
 		if e != nil {
 			log.Println(e)
 		}

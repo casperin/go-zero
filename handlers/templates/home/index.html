@@ -1,11 +1,5 @@
 {{ define "content" }}
-<h1>Zero: Login</h1>
-
-{{ if .Error }}
-<div>
-    <mark>{{ .Error }}</mark>
-</div>
-{{ end }}
+<h1>Login</h1>
 
 <form action="/users/authenticate" method="POST">
     <label for="email">Email</label>
